@@ -224,6 +224,7 @@ page = st.sidebar.radio("Navigate", [
     "Overview",
     "Country Map",
     "Scoring Table",
+    "Market Data",
     "Country Briefs",
     "Partner Pipeline",
     "Interview Findings",
@@ -391,7 +392,165 @@ elif page == "Scoring Table":
                       legend=dict(orientation="h", y=-0.35))
     st.plotly_chart(fig, use_container_width=True)
 
-# ── PAGE 4: COUNTRY BRIEFS ────────────────────────────────────────────────────
+# ── PAGE 4: MARKET DATA ───────────────────────────────────────────────────────
+elif page == "Market Data":
+    st.title("Market Data — Research Framework")
+    st.caption("Quantitative indicators underlying the scoring model | Sources: World Bank, GSMA, EIU, Freedom House, Fund for Peace")
+    st.markdown("---")
+
+    market_data = pd.DataFrame([
+        dict(country="Colombia", flag="🇨🇴", urban_pop=41526940, urban_growth=1.4, vulnerable_pct=30, self_employed=45.6, micro_segment=5680885, mpi_headcount=8.8, urban_mpi=0.017, risk_flag="",
+             internet=74, coverage_4g=86.7, affordability=64.2, consumer_readiness=83.2, mobile_commerce=14.8, eiu_risk=75.6, fragile_states=69, freedom_house=69, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=55.1),
+        dict(country="Mexico", flag="🇲🇽", urban_pop=104366730, urban_growth=1.2, vulnerable_pct=15, self_employed=30.8, micro_segment=4821743, mpi_headcount=1.9, urban_mpi=0.008, risk_flag="Low Need Risk",
+             internet=81, coverage_4g=94.4, affordability=73.0, consumer_readiness=83.2, mobile_commerce=19.4, eiu_risk=69.0, fragile_states=58, freedom_house=58, revenue_ngo="Yes (with restrictions)", extra_entity="Yes", reg_quality=51.8),
+        dict(country="Kenya", flag="🇰🇪", urban_pop=17998600, urban_growth=2.8, vulnerable_pct=64, self_employed=64.8, micro_segment=7464379, mpi_headcount=47.3, urban_mpi=0.024, risk_flag="",
+             internet=41, coverage_4g=97.3, affordability=47.3, consumer_readiness=63.4, mobile_commerce=20.6, eiu_risk=86.5, fragile_states=49, freedom_house=49, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=49.6),
+        dict(country="Ghana", flag="🇬🇭", urban_pop=20093730, urban_growth=2.8, vulnerable_pct=48, self_employed=67.5, micro_segment=6510369, mpi_headcount=44.1, urban_mpi=0.041, risk_flag="",
+             internet=69, coverage_4g=99.3, affordability=46.8, consumer_readiness=68.7, mobile_commerce=14.8, eiu_risk=60.8, fragile_states=80, freedom_house=80, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=53.5),
+        dict(country="Peru", flag="🇵🇪", urban_pop=29150620, urban_growth=1.6, vulnerable_pct=27, self_employed=51.3, micro_segment=4037652, mpi_headcount=6.9, urban_mpi=0.012, risk_flag="",
+             internet=72, coverage_4g=88.0, affordability=62.5, consumer_readiness=79.0, mobile_commerce=15.9, eiu_risk=72.0, fragile_states=66, freedom_house=66, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=56.2),
+        dict(country="Dominican Republic", flag="🇩🇴", urban_pop=8274940, urban_growth=0.9, vulnerable_pct=10, self_employed=42.1, micro_segment=348375, mpi_headcount=1.6, urban_mpi=0.010, risk_flag="Low Need Risk",
+             internet=91, coverage_4g=99.0, affordability=55.4, consumer_readiness=79.9, mobile_commerce=19.9, eiu_risk=60.2, fragile_states=67, freedom_house=67, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=58.1),
+        dict(country="Cambodia", flag="🇰🇭", urban_pop=7209450, urban_growth=1.8, vulnerable_pct=45, self_employed=55.5, micro_segment=1800560, mpi_headcount=43.1, urban_mpi=None, risk_flag="",
+             internet=52, coverage_4g=98.0, affordability=61.9, consumer_readiness=66.5, mobile_commerce=13.8, eiu_risk=78.6, fragile_states=22, freedom_house=22, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=44.9),
+        dict(country="Guatemala", flag="🇬🇹", urban_pop=10299220, urban_growth=2.2, vulnerable_pct=34, self_employed=39.1, micro_segment=1369178, mpi_headcount=13.7, urban_mpi=0.033, risk_flag="",
+             internet=56, coverage_4g=90.0, affordability=57.9, consumer_readiness=67.6, mobile_commerce=7.2, eiu_risk=74.9, fragile_states=48, freedom_house=48, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=50.0),
+        dict(country="Honduras", flag="🇭🇳", urban_pop=6363900, urban_growth=2.5, vulnerable_pct=39, self_employed=44.1, micro_segment=1094527, mpi_headcount=18.4, urban_mpi=0.012, risk_flag="",
+             internet=63, coverage_4g=87.6, affordability=36.3, consumer_readiness=74.5, mobile_commerce=9.6, eiu_risk=78.1, fragile_states=47, freedom_house=47, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=45.0),
+        dict(country="Malawi", flag="🇲🇼", urban_pop=3739540, urban_growth=4.3, vulnerable_pct=98, self_employed=61.3, micro_segment=2246491, mpi_headcount=80.6, urban_mpi=0.065, risk_flag="⚠️ High Friction Risk",
+             internet=18, coverage_4g=84.7, affordability=24.6, consumer_readiness=48.7, mobile_commerce=2.1, eiu_risk=80.5, fragile_states=68, freedom_house=68, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=45.6),
+        dict(country="Nicaragua", flag="🇳🇮", urban_pop=4098700, urban_growth=1.6, vulnerable_pct=43, self_employed=44.3, micro_segment=780761, mpi_headcount=17.5, urban_mpi=None, risk_flag="",
+             internet=58, coverage_4g=78.5, affordability=40.9, consumer_readiness=76.4, mobile_commerce=4.7, eiu_risk=76.7, fragile_states=14, freedom_house=14, revenue_ngo="Yes (with restrictions)", extra_entity="Yes", reg_quality=39.2),
+        dict(country="Cape Verde", flag="🇨🇻", urban_pop=402960, urban_growth=1.6, vulnerable_pct=23, self_employed=38.5, micro_segment=35682, mpi_headcount=17.0, urban_mpi=None, risk_flag="",
+             internet=73, coverage_4g=83.0, affordability=58.0, consumer_readiness=73.8, mobile_commerce=None, eiu_risk=57.2, fragile_states=92, freedom_house=92, revenue_ngo="Yes (with restrictions)", extra_entity="Sometimes", reg_quality=55.6),
+    ]).sort_values("micro_segment", ascending=False)
+
+    tab1, tab2, tab3 = st.tabs(["📊 Socio Profile", "📱 Digital Readiness", "⚖️ Operating Environment"])
+
+    with tab1:
+        st.subheader("Socio Profile Fit & Density")
+        st.caption("Estimates the size and quality of the addressable urban micro-entrepreneur segment")
+
+        st.markdown("**Estimated Urban Micro-Entrepreneur Segment** = Urban Population × % Vulnerable × % Self-Employed")
+
+        fig = px.bar(
+            market_data.sort_values("micro_segment", ascending=True),
+            x="micro_segment", y="country", orientation="h",
+            color="micro_segment", color_continuous_scale="Blues",
+            text="micro_segment",
+            labels={"micro_segment": "Estimated Micro-Entrepreneur Segment", "country": ""}
+        )
+        fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
+        fig.update_layout(height=420, showlegend=False, coloraxis_showscale=False)
+        st.plotly_chart(fig, use_container_width=True)
+
+        display = market_data[["flag", "country", "urban_pop", "urban_growth", "vulnerable_pct",
+                                "self_employed", "micro_segment", "mpi_headcount", "risk_flag"]].copy()
+        display["Urban Pop"] = display["urban_pop"].apply(lambda x: f"{x:,.0f}")
+        display["Growth"] = display["urban_growth"].apply(lambda x: f"{x}%")
+        display["Vulnerable"] = display["vulnerable_pct"].apply(lambda x: f"{x}%")
+        display["Self-Employed"] = display["self_employed"].apply(lambda x: f"{x}%")
+        display["Micro-Entrepreneur Segment"] = display["micro_segment"].apply(lambda x: f"{x:,.0f}")
+        display["MPI Headcount"] = display["mpi_headcount"].apply(lambda x: f"{x}%")
+        display["Country"] = display.apply(lambda r: f"{r.flag} {r.country}", axis=1)
+        st.dataframe(
+            display[["Country", "Urban Pop", "Growth", "Vulnerable", "Self-Employed",
+                      "Micro-Entrepreneur Segment", "MPI Headcount", "risk_flag"]].rename(
+                columns={"risk_flag": "Risk Flag"}),
+            use_container_width=True, hide_index=True
+        )
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**⚠️ High Friction Risk** — Population may be too deprived to engage consistently")
+            st.markdown("*Threshold: MPI headcount ≥60%, urban MPI ≥0.05, or vulnerability + informality ≥70%*")
+            st.error("Malawi — 98% vulnerable, 61% self-employed, MPI 0.065")
+        with col2:
+            st.markdown("**💛 Low Need Risk** — Population may be too well-off for MI's model")
+            st.markdown("*Threshold: vulnerability ≤20%, MPI headcount ≤10%, urban MPI ≤0.01*")
+            st.warning("Mexico — 15% vulnerable, MPI 0.008")
+            st.warning("Dominican Republic — 10% vulnerable, MPI 0.010")
+
+    with tab2:
+        st.subheader("Digital Readiness for Virtual Program Delivery")
+        st.caption("Can Mentors scale virtually in this country?")
+
+        fig = go.Figure()
+        fig.add_trace(go.Bar(name="Affordability (score/100)", x=market_data["country"],
+                             y=market_data["affordability"], marker_color="#1B2A4A"))
+        fig.add_trace(go.Bar(name="Consumer Readiness (score/100)", x=market_data["country"],
+                             y=market_data["consumer_readiness"], marker_color="#2E75B6"))
+        fig.add_trace(go.Scatter(name="Internet Usage %", x=market_data["country"],
+                                 y=market_data["internet"], mode="lines+markers",
+                                 marker=dict(color="#27AE60", size=8), yaxis="y"))
+        fig.update_layout(barmode="group", height=400, xaxis_tickangle=-30,
+                          yaxis_title="Score / %", legend=dict(orientation="h", y=1.1))
+        st.plotly_chart(fig, use_container_width=True)
+
+        display = market_data[["flag", "country", "internet", "coverage_4g",
+                                "affordability", "consumer_readiness", "mobile_commerce"]].copy()
+        display["Country"] = display.apply(lambda r: f"{r.flag} {r.country}", axis=1)
+        display["Internet Usage"] = display["internet"].apply(lambda x: f"{x}%")
+        display["4G Coverage"] = display["coverage_4g"].apply(lambda x: f"{x}%")
+        display["Affordability"] = display["affordability"].apply(lambda x: f"{x}/100")
+        display["Consumer Readiness"] = display["consumer_readiness"].apply(lambda x: f"{x}/100")
+        display["Mobile Commerce"] = display["mobile_commerce"].apply(
+            lambda x: f"{x}%" if x else "N/A")
+        st.dataframe(
+            display[["Country", "Internet Usage", "4G Coverage", "Affordability",
+                      "Consumer Readiness", "Mobile Commerce"]],
+            use_container_width=True, hide_index=True
+        )
+
+        st.markdown("---")
+        st.markdown("**Key insight:** 4G coverage is high across all countries (78–99%) — the bottleneck is **affordability** and **consumer readiness**, not infrastructure. Honduras (36.3) and Malawi (24.6) are the weakest on affordability.")
+
+    with tab3:
+        st.subheader("Operating Environment")
+        st.caption("Is this country safe and legally viable for Mentors to operate and generate revenue?")
+
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            name="EIU Operational Risk (higher = riskier)",
+            x=market_data.sort_values("eiu_risk", ascending=False)["country"],
+            y=market_data.sort_values("eiu_risk", ascending=False)["eiu_risk"],
+            marker_color=["#E74C3C" if x > 80 else "#F39C12" if x > 65 else "#27AE60"
+                          for x in market_data.sort_values("eiu_risk", ascending=False)["eiu_risk"]]
+        ))
+        fig.update_layout(height=350, yaxis_title="Risk Score (higher = riskier)",
+                          xaxis_tickangle=-30)
+        st.plotly_chart(fig, use_container_width=True)
+
+        display = market_data[["flag", "country", "eiu_risk", "fragile_states",
+                                "freedom_house", "revenue_ngo", "extra_entity", "reg_quality"]].copy()
+        display["Country"] = display.apply(lambda r: f"{r.flag} {r.country}", axis=1)
+        display["EIU Risk"] = display["eiu_risk"].apply(lambda x: f"{x}")
+        display["Fragile States"] = display["fragile_states"].apply(lambda x: f"{x}/120")
+        display["Freedom House"] = display["freedom_house"].apply(lambda x: f"{x}/100")
+        display["Reg Quality"] = display["reg_quality"].apply(lambda x: f"{x}")
+
+        st.dataframe(
+            display[["Country", "EIU Risk", "Fragile States", "Freedom House",
+                      "revenue_ngo", "extra_entity", "Reg Quality"]].rename(columns={
+                "revenue_ngo": "Revenue NGO Allowed?", "extra_entity": "Extra Entity Needed?"}),
+            use_container_width=True, hide_index=True
+        )
+
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**🚨 Highest Operating Risk:**")
+            st.error("Kenya — EIU 86.5 (highest risk)")
+            st.error("Malawi — EIU 80.5")
+            st.error("Cambodia — EIU 78.6")
+        with col2:
+            st.markdown("**⚠️ Extra Legal Entity Required:**")
+            st.warning("Mexico — must set up separate entity for revenue")
+            st.warning("Nicaragua — must set up separate entity for revenue")
+            st.info("All others — sometimes required depending on structure")
+
+# ── PAGE 5: COUNTRY BRIEFS ────────────────────────────────────────────────────
 elif page == "Country Briefs":
     st.title("Country Briefs")
     st.caption("Select a country to view the full brief")
